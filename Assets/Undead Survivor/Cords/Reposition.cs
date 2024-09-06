@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Reposition : MonoBehaviour
 {
+    Collider2D coll; // 모든 콜라이더의 기본 도형을 다 아우르는 클래스
+
+    void Awake()
+    {
+        coll = GetComponent<Collider2D>();
+    }
+
     void OnTriggerExit2D(Collider2D collision)
     {
         // OnTriggerExit2D의 매개변수 상대방 콜라이더의 태그를 조건으로.
@@ -37,8 +45,13 @@ public class Reposition : MonoBehaviour
                     transform.Translate(Vector3.up * dirY * 40);                    
                 }
                 break;
-            case "Enemy":
-
+            case "Enemy": // 이곳에서 에너미 재배치 로직 사용
+                if(coll.enabled) // 콜라이더가 활성화 되어있는지 조건 먼저 작성
+                {
+                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));
+                    // 플레이어의 이동 방향에 따라 맞은 편에서 등장하도록 이동
+                    // 랜덤한 위치에서 등장하도록 벡터 더하기
+                }
                 break;
 
         }
