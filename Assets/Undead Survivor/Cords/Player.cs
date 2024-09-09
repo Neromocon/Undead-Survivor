@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public Vector2 inputVec;
     public float speed;
+    public Scanner scanner; // 플레이어 스크립트에서 검색 클래스 타입 변수 선언 및 초기화
     Rigidbody2D rigid;
     // 게임 오브젝트의 리지드바디 2D를 저장할 변수 선언
     SpriteRenderer spriter;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         // GetComponent<T> : 오브젝트에서 컴포넌트를 가져오는 함수. T자리에 컴포넌트 이름 작성
         anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
     // Update is called once per frame
