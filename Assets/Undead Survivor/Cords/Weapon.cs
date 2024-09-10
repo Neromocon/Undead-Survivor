@@ -18,16 +18,10 @@ public class Weapon : MonoBehaviour
 
     void Awake()
     {
-        player = GetComponentInParent<Player>();
+        player = GameManager.instance.player;
         // GetComponentInParent 함수로 부모의 컴포넌트 가져오기
+        // -> Awake 함수에서의 플레이어 초기화는 게임매니저 활용으로 변경
     }
-
-
-    void Start()
-    {
-        Init();
-    }
-
 
     void Update()
     {
@@ -65,11 +59,39 @@ public class Weapon : MonoBehaviour
 
         if(id == 0) // 속성 변경과 동시에 근접무기의 경우 배치도 필요하니 함수 호출        
             Bacth();
-        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+        // BroadcastMessage를 초기화, 레벨업 함수 마지막 부분에서 호출
     }
 
-    public void Init()
+    public void Init(ItemData data)
+    // Weapon 초기화 함수에 스크립트블 오브젝트를 매개변수로 받아 활용
     {
+        // Basic Set
+        name = "Weapon" + data.itemId;
+        transform.parent = player.transform;
+        // 무기를 플레이어의 자식으로 설정해야 함
+        transform.localPosition = Vector3.zero;
+        // 지역 위치인 localPosition을 원점으로 변경
+
+        // Property Set
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+        // 각종 무기 속성 변수들을 스크립트블 오브젝트 데이터로 초기화
+
+        for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        {
+            if(data.projectile == GameManager.instance.pool.prefabs[index])
+            // 프리펩 아이디는 풀링 매니저의 변수에서 찾아서 초기화
+            {
+                prefabID = index;
+                break;
+            }
+        }
+        // 왜이렇게 하느냐, 스크립트블 오브젝트의 독립성을 위해서 인덱스가 아닌 프리펩으로 설정.
+        // 즉, 프리펩으로 설정하면 수정 시 한꺼번에 수정 가능? 직관적임
+
+
         // 무기 ID에 따라 로직을 분리할 switch 문 작성
         switch (id)
         {
@@ -83,6 +105,12 @@ public class Weapon : MonoBehaviour
                 // speed값은 연사속도를 의미 : 적을 수록 많이 발사
                 break;
         }
+
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+        // BroadcastMessage : 특정 함수 호출을 모든 자식에게 방송하는 함수
+        // BroadcastMessage의 두번째 인자값으로 SendMessageOptions의 DontRequireReceiver를 추가
+
+
     }
 
     void Bacth()
