@@ -36,8 +36,11 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         // 몬스터가 살아있는 동안에만 움직이도록 조건 추가
-        if(!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             // GetCurrentAnimatorStateInfo : 현재 상태 정보를 가져오는 함수
             // IsName : 해당 상태의 이름이 지정된 것과 같은지 확인하는 함수
             return;
@@ -60,6 +63,9 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()//플레이어 위치에 따라 방향 전환
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         if (!isLive)
             return;
 

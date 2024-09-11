@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public float speed;
     public Scanner scanner; // 플레이어 스크립트에서 검색 클래스 타입 변수 선언 및 초기화
+    public Hand[] hands;
+
+
     Rigidbody2D rigid;
     // 게임 오브젝트의 리지드바디 2D를 저장할 변수 선언
     SpriteRenderer spriter;
@@ -21,6 +24,10 @@ public class Player : MonoBehaviour
         // GetComponent<T> : 오브젝트에서 컴포넌트를 가져오는 함수. T자리에 컴포넌트 이름 작성
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        hands = GetComponentsInChildren<Hand>(true);
+        // 플레이어에서 손 스크립트를 담을 배열변수 선언 및 초기화
+        // 함수 인자 값을 추가 하지 않을 시 플레이어 오브젝트의 무기들은 비활성화 되었기 때문에 대상에서 제외가 됨
+        // 따라서 인자값을 true로 설정하면 활성화 가능
     }
 
     // Update is called once per frame
@@ -28,6 +35,9 @@ public class Player : MonoBehaviour
     //   -> Ex) 60프레임이면 1초에 60번 실행이 되는 형식.
     void Update()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         inputVec.x = Input.GetAxisRaw("Horizontal");
         //inputVec.x = Input.GetAxis("Horizontal");
         inputVec.y = Input.GetAxisRaw("Vertical");
@@ -51,6 +61,9 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     //FixedUpdate : 물리 연산 프레임마다 호출되는 생명주기 함수.
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
         // normalized : 벡터 값의 크기가 1이 되도록 좌표가 수정된 값.
         // 피타고라스 정의를 생각해 보자. 위로 1픽셀로 움직이거나 오른쪽으로 1픽셀 움직이는 길이랑
@@ -84,6 +97,9 @@ public class Player : MonoBehaviour
     void LateUpdate()
     // LateUpdate : 프레임이 종료 되기 전 실행되는 생명주기 함수
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         anim.SetFloat("Speed", inputVec.magnitude);
         // SetFloat 첫번째 인자 : 파라메타 이름
         // SetFloat 두번째 인자 : 변경할 float 값

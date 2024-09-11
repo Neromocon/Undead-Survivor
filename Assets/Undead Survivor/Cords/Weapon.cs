@@ -25,6 +25,9 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         switch (id)
         {
             case 0:
@@ -105,6 +108,14 @@ public class Weapon : MonoBehaviour
                 // speed값은 연사속도를 의미 : 적을 수록 많이 발사
                 break;
         }
+
+        // Weapon 스크립트의 초기화 함수에서 로직 작성
+        // Hand Set
+        Hand hand = player.hands[(int)data.itemType];
+        // 스크립트블 오브젝트의 데이터로 스프라이트 적용
+        hand.spriter.sprite = data.hand;
+        hand.gameObject.SetActive(true);// SetActive 함수로 활성화
+
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
         // BroadcastMessage : 특정 함수 호출을 모든 자식에게 방송하는 함수

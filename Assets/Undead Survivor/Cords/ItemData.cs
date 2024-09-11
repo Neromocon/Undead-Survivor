@@ -15,6 +15,8 @@ public class ItemData : ScriptableObject // * MonoBehaviour가 아님!!
     public ItemType itemType;
     public int itemId;
     public string itemName;
+    [TextArea]
+    // 인스펙터에 텍스트를 여러 줄 넣을 수 있게 TextArea 속성 부여
     public string itemDesc;
     public Sprite itemIcon;
 
@@ -26,6 +28,7 @@ public class ItemData : ScriptableObject // * MonoBehaviour가 아님!!
 
     [Header("# Weapon")]
     public GameObject projectile;
+    public Sprite hand; // 스크립트블 오브젝트 코드에서 손 스프라이트를 담을 속성
 
 
 
