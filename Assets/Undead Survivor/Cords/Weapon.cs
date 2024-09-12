@@ -57,10 +57,10 @@ public class Weapon : MonoBehaviour
     // 레벨업 함수 작성
     public void LevelUp(float damage, int count)
     {
-        this.damage = damage;        
-        this.count += count;
+        this.damage = damage * Character.Damage;        
+        this.count += count;// + Character.Count
 
-        if(id == 0) // 속성 변경과 동시에 근접무기의 경우 배치도 필요하니 함수 호출        
+        if (id == 0) // 속성 변경과 동시에 근접무기의 경우 배치도 필요하니 함수 호출        
             Bacth();
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
         // BroadcastMessage를 초기화, 레벨업 함수 마지막 부분에서 호출
@@ -78,8 +78,8 @@ public class Weapon : MonoBehaviour
 
         // Property Set
         id = data.itemId;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        damage = data.baseDamage * Character.Damage;
+        count = data.baseCount + Character.Count;
         // 각종 무기 속성 변수들을 스크립트블 오브젝트 데이터로 초기화
 
         for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
@@ -99,12 +99,12 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = 150;                 
+                speed = 150 * Character.WeaponSpeed;                 
                 Bacth();
 
                 break;
             default:
-                speed = 0.3f;
+                speed = 0.5f * Character.WeaponRate;
                 // speed값은 연사속도를 의미 : 적을 수록 많이 발사
                 break;
         }

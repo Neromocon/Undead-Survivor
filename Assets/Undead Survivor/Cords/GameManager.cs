@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,8 +14,9 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 2 * 10f;
     // 게임시간과 최대 게임시간을 담당할 변수 선언
     [Header("# Player Info")]
-    public int health;
-    public int maxHealth = 100;
+    public int playerId;
+    public float health;
+    public float maxHealth = 100; // 생명력 관련 변수는 float형으로 변경
     public int level;
     public int kill;
     public int exp;
@@ -24,8 +26,9 @@ public class GameManager : MonoBehaviour
     // 다양한 곳에서 쉽게 접근할 수 있도록 게임매니저에 풀 매니저 추가
     public Player player;
     public LevelUp uiLevelUp;
-
-
+    public Result uiResult; // 게임결과 UI 오브젝트를 저장할 변수 선언 및 초기화
+    // 기존의 타입을 Result으로 변경
+    public GameObject enemyCleaner;
 
     void Awake()
     {
@@ -33,15 +36,56 @@ public class GameManager : MonoBehaviour
         // Awake 생명주기에서 인스턴스 변수를 자기자신 this로 초기화
     }
 
-    void Start()
+    public void GameStart(int id)// 게임매니저의 기존 Start함수를 GameStart로 변경
     {
-        health = maxHealth;
-        // 시작할 때 현재 체력과 최대 체력이 같도록 로직 추가
+        playerId = id;
+        health = maxHealth;// 시작할 때 현재 체력과 최대 체력이 같도록 로직 추가
 
-        uiLevelUp.Select(0);
-        //임시 스크립트 (첫번째 캐릭터 선택)
+        player.gameObject.SetActive(true); // 게임 시작할 때 플레이어 활성화 후 기본 부기 지급
+        uiLevelUp.Select(playerId % 2);// 기존 무기 지급을 위한 함수 호출에서 인자 값을 캐릭터ID로 변경
+        //uiLevelUp.Select(0);//임시 스크립트 (첫번째 캐릭터 선택)
+
+        isLive = true;
+        Resume();
     }
 
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine() // 딜레이를 위해 게임오버 코루틴 작성
+    {
+        isLive = false;
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);// 게임결과 UI 오브젝트를 게임오버 코루틴에서 활성화
+        uiResult.Lose();
+        Stop();
+    }
+    public void GameVictroy()
+    {
+        StartCoroutine(GameVictroyRoutine());
+    }
+    IEnumerator GameVictroyRoutine() // 딜레이를 위해 게임오버 코루틴 작성
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);// 게임결과 UI 오브젝트를 게임오버 코루틴에서 활성화
+        uiResult.Win();
+        Stop();
+    }
+
+
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
+        // LoadScene : 이름 혹은 인덱스로 장면을 새롭게 부르는 함수
+    }
 
     void Update()
     {
@@ -53,13 +97,15 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)// 타이머가 일정 시간 값에 도달하면 소환하도록 작성
         {
             gameTime = maxGameTime;
-            
+            GameVictroy();
         }
 
     }
 
     public void GetExp() // 경험치 증가 함수
     {
+        if(!isLive)
+            return;
         exp++;
 
         if(exp == nextExp[Mathf.Min(level, nextExp.Length-1)]) // 조건으로 필요 경험치에 도달하면 레벨 업하도록 구성

@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     public float speed;
     public Scanner scanner; // 플레이어 스크립트에서 검색 클래스 타입 변수 선언 및 초기화
     public Hand[] hands;
-
+    public RuntimeAnimatorController[] animCon;
+    // 플레이어 스크립트에 여러 애니메이터 컨트롤러를 저장할 배열 변수 선언
 
     Rigidbody2D rigid;
     // 게임 오브젝트의 리지드바디 2D를 저장할 변수 선언
@@ -28,6 +29,12 @@ public class Player : MonoBehaviour
         // 플레이어에서 손 스크립트를 담을 배열변수 선언 및 초기화
         // 함수 인자 값을 추가 하지 않을 시 플레이어 오브젝트의 무기들은 비활성화 되었기 때문에 대상에서 제외가 됨
         // 따라서 인자값을 true로 설정하면 활성화 가능
+    }
+
+    void OnEnable()
+    {
+        speed *= Character.Speed;
+        anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
     }
 
     // Update is called once per frame
@@ -111,5 +118,35 @@ public class Player : MonoBehaviour
             spriter.flipX = inputVec.x < 0;
         }
     }
+
+    void OnCollisionStay2D(Collision2D collision)//피격 로직
+    {
+        if(!GameManager.instance.isLive)
+            return;
+
+        GameManager.instance.health -= Time.deltaTime * 10;
+        // Time.deltaTime을 활용하여 적절한 피격 데미지 계산
+
+        if(GameManager.instance.health < 0)// 생명력이 0보다 작을 때를 조건으로 작성
+        {
+            for(int index = 2; index < transform.childCount; index++)
+            // childCount : 자식 오브젝트의 개수
+            // 이것을 쓰는 이유가 플레이어는 여러개의 자식 오브젝트를 가지고 있기 때문
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+                // GetChild : 주어진 인덱스의 자식 오브젝트를 반환하는 함수
+                // transform.GetChild(index) -> 자식오브젝트의 트랜스폼이 나옴
+            }
+
+            anim.SetTrigger("Dead");
+            // 애니메이터 SetTrigger 함수로 죽음 애니메이션 실행
+            GameManager.instance.GameOver();
+
+
+        }
+
+
+    }
+
 
 }
