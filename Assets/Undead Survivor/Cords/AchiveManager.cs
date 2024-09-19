@@ -113,6 +113,8 @@ public class AchiveManager : MonoBehaviour
     IEnumerator NoticeRoutine() // 알림 창을 활성화했다가 일정 시간 이후 비활성화하는 코루틴 생성
     {
         uiNotice.SetActive(true);//활성화 하고
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
+
 
         yield return wait; // 5초를 기다리고
 

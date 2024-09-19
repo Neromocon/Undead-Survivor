@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,9 +46,9 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive)
             return;
 
-        inputVec.x = Input.GetAxisRaw("Horizontal");
-        //inputVec.x = Input.GetAxis("Horizontal");
-        inputVec.y = Input.GetAxisRaw("Vertical");
+        //inputVec.x = Input.GetAxisRaw("Horizontal");
+        // inputVec.x = Input.GetAxis("Horizontal");
+        //inputVec.y = Input.GetAxisRaw("Vertical");
         // Input : 유니티에서 받는 모든 입력을 관리하는 클래스.
         // GetAxis() : 축에 대한 값. 어떤 축이라고 물어보면 문자열로 넣음.
         // 유니티 에디터에서 Edit -> Project -> Input Manager에서 버튼이름 확인 가능.
@@ -95,11 +96,7 @@ public class Player : MonoBehaviour
 
     }
 
-    //void OnMove(InputValue value)
-    //{
-    //    inputVec = value.Get<Vector2>();
-    //    // Get<> : 프로필에서 설정한 컨트롤 타입T값을 가져오는 함수
-    //}
+    
 
     void LateUpdate()
     // LateUpdate : 프레임이 종료 되기 전 실행되는 생명주기 함수
@@ -148,5 +145,10 @@ public class Player : MonoBehaviour
 
     }
 
+    void OnMove(InputValue value)
+    {
+        inputVec = value.Get<Vector2>();
+        // Get<> : 프로필에서 설정한 컨트롤 타입T값을 가져오는 함수
+    }
 
 }

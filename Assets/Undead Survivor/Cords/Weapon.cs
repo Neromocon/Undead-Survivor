@@ -156,9 +156,13 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 1.5f, Space.World); // Translate함수로 자신의 위쪽으로 이동
             // 이동 방향은 Space.World 기준으로
 
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // 근접무기이기 때문에 -1로 설정
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // 근접무기이기 때문에 -1로 설정
             // -1은 무한히 관통함. 갈갈이? 슬랩찹!
+            // 근거리 무기를 의미하는 관통력을 -100으로 재설정
+
+            
         }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);
     }
 
     void Fire() //발사 로직
@@ -181,6 +185,8 @@ public class Weapon : MonoBehaviour
         // FromToRotation : 지정된 축을 중심으로 목표를 향해 회전하는 함수
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
         // 원거리 공격에 맞게 초기화 함수 호출하기
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
 

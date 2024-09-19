@@ -118,6 +118,7 @@ public class Enemy : MonoBehaviour
             // 아직 살아있음. 피격 액션
             anim.SetTrigger("Hit");
             //피격 부분에 애니메이터의 SetTrigger 함수를 호출하여 상태 변경
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else// 끄앙 죽음
         {
@@ -130,6 +131,12 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
+
+            if (GameManager.instance.isLive)//언데드 사망 사운드는 게임 종료 시에는 나지 않도록 조건 추가. 게임 승리시 모든 몬스터가 죽는데 이때 사망 사운드가 한꺼번에 나타나므로 플레이어에게 큰 영향을 끼치기 때문.
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+
         }
 
 

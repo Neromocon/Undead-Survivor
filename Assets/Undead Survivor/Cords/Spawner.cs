@@ -7,7 +7,8 @@ public class Spawner : MonoBehaviour
     public Transform[] spawnPoint;
     // 자식 오브젝트의 트랜스폼을 담을 배열 변수 선언
     public SpawnData[] spawnData;
-
+    public float levelTime;
+    // 소환 레벨 구간을 결정하는 변수
 
 
     int level; // 소환 스크립트에서 레벨 담당 변수 선언
@@ -18,7 +19,8 @@ public class Spawner : MonoBehaviour
         spawnPoint = GetComponentsInChildren<Transform>();
         // GetComponentsInChildren 함수로 초기화. * GetComponentInChildren 와 별개의 함수임.
         // GetComponent != GetComponents 마지막 s자 주의!
-
+        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+        // 최대 시간에 몬스터 데이터 크기로 나누어 자동으로 구간 시간 계산
     }
 
 
@@ -29,7 +31,10 @@ public class Spawner : MonoBehaviour
 
         timer += Time.deltaTime;
         // 타이머 변수에는 deltaTime을 계속 더하기. deltaTime : 1프레임이 소비한 시간.
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1);
+        
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), spawnData.Length - 1);
+
+        //level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1);
         // 적절한 숫자로 나누어 시간에 맞춰 레벨이 올라가도록 작성
         // 그대로 진행하면 소수형으로 값이 나오는데 level은 정수 타입이라 오류가 발행함.
         // 따라서 Mathf함수의 FloorToInt를 사용함.

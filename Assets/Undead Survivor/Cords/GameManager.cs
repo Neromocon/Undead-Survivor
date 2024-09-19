@@ -28,12 +28,15 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;
     public Result uiResult; // 게임결과 UI 오브젝트를 저장할 변수 선언 및 초기화
     // 기존의 타입을 Result으로 변경
+    public Transform uiJoy;
     public GameObject enemyCleaner;
 
     void Awake()
     {
         instance = this;
         // Awake 생명주기에서 인스턴스 변수를 자기자신 this로 초기화
+        Application.targetFrameRate = 60;
+        // targetFrameRate : 직접 지정한 숫자대로 프레임률을 지정 한다
     }
 
     public void GameStart(int id)// 게임매니저의 기존 Start함수를 GameStart로 변경
@@ -47,6 +50,11 @@ public class GameManager : MonoBehaviour
 
         isLive = true;
         Resume();
+
+        AudioManager.instance.PlayBgm(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        //효과음을 재생할 부분마다 재생함수 호출
+        //게임이 시작할 때 캐릭터를 선택해야 하므로 Sfx.Select를 선택함
     }
 
     public void GameOver()
@@ -63,6 +71,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);// 게임결과 UI 오브젝트를 게임오버 코루틴에서 활성화
         uiResult.Lose();
         Stop();
+
+        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
     }
     public void GameVictroy()
     {
@@ -78,6 +89,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);// 게임결과 UI 오브젝트를 게임오버 코루틴에서 활성화
         uiResult.Win();
         Stop();
+
+        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
 
 
@@ -85,6 +99,11 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
         // LoadScene : 이름 혹은 인덱스로 장면을 새롭게 부르는 함수
+    }
+
+    public void GameQuit()//종료 버튼의 기능을 담당하는 함수
+    {
+        Application.Quit();
     }
 
     void Update()
@@ -124,6 +143,7 @@ public class GameManager : MonoBehaviour
         isLive = false;
         Time.timeScale = 0;
         // timeScale : 유니티의 시간 속도(배율)
+        uiJoy.localScale = Vector3.zero;
     }
 
 
@@ -131,6 +151,7 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
+        uiJoy.localScale = Vector3.one;
     }
 
 
