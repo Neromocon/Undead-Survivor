@@ -7,6 +7,8 @@ public class AchiveManager : MonoBehaviour
 {
     public GameObject[] lockCharacter;
     public GameObject[] unlockCharacter;
+    public GameObject[] Coll_lockCharacter;
+    public GameObject[] Coll_unlockCharacter;
     public GameObject uiNotice;
 
     enum Achive { UnlockPotato, UnlockBean } // 업적 데이터와 같은 열거형 enum 작성
