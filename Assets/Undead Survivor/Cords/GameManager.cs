@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     // 기존의 타입을 Result으로 변경
     public Transform uiJoy;
     public GameObject enemyCleaner;
+    
 
     void Awake()
     {
