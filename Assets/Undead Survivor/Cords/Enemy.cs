@@ -13,7 +13,10 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D target;
 
     bool isLive;
-    
+
+    public GameObject Gold;
+    [SerializeField]
+    private int gold = 10; // 적 사망시 획득 가능한 골드
 
     //리지드바디2D와 스프라이트렌더러를 위한 변수 선언
     Rigidbody2D rigid;
@@ -136,6 +139,11 @@ public class Enemy : MonoBehaviour
             {
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
+
+            GameObject gold = Instantiate(Gold, transform.position, Quaternion.identity);
+            //몬스터가 죽은 위치에 골드 생성
+            GameManager.instance.PlayerGold += 10;
+            // 게임메니저의 PlayerGold에 골드량을 증가시켜줌
 
         }
 

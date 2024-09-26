@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class EventManager : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class EventManager : MonoBehaviour
     public Button btn_Store;
     public Button btn_Collection;
     public Button btn_Option;
-    public Button btn_Exit;
+    //public Button btn_Exit;
+    public Button btn_Back;
     //인스펙터에 할당할 버튼들
     public GameObject Title;
 
@@ -38,6 +40,10 @@ public class EventManager : MonoBehaviour
     public GameObject CoinEx;
 
 
+    //[Header("# Game Scene")]
+    //public GameObject MainScene;    
+    //public GameObject StoreScene;
+
     //public GameObject[] StatusChoices;
 
 
@@ -48,12 +54,15 @@ public class EventManager : MonoBehaviour
     public int CoinAct = 0;
 
 
+    
     void Start()
     {
         //CharacterGroup.SetActive(false);
         //Coll_ChararcterGroup.SetActive(false);
         //Store.SetActive(false);
     }
+
+
 
     public void ButtonClick()//시작버튼 클릭
     {
@@ -66,15 +75,12 @@ public class EventManager : MonoBehaviour
     }
     public void Store_ButtonClick()//상점버튼 클릭
     {
-        Store_IPointerDownHandler();
-        //switch()
-        //{
-        //    case 0:
-        //        break;
-        //}
+        Store_IPointerDownHandler();        
+        //btn_Back.gameObject.SetActive(true);
+        
     }
-    
 
+    
     public void IPointerDownHandler()//게임 시작페이지
     {
         //Debug.Log("시작");
@@ -100,15 +106,17 @@ public class EventManager : MonoBehaviour
     }
 
     public void Store_IPointerDownHandler()// 상점
-    {
+    {        
         Store.SetActive(true);
-        Application.Quit();
+        //btn_Back.gameObject.SetActive(true);
+        //Application.Quit();
         //아래는 해당 버튼말고 다른 버튼들은 초기화시킴. 타이틀하고
         btn_Start.gameObject.SetActive(false);
         btn_Store.gameObject.SetActive(false);
         btn_Collection.gameObject.SetActive(false);
         btn_Option.gameObject.SetActive(false);
         Title.SetActive(false);
+        //Debug.Log("뒤로가기" + btn_Back.gameObject.activeSelf);
     }
 
     void DeactivateAllItems()
@@ -124,10 +132,11 @@ public class EventManager : MonoBehaviour
 
     void buy()
     {
-        if(HealthAct == 1)//체력 버튼이 활성화 됬을 때
-        {
+        Debug.Log("Shut up and take my money");
+        //if(HealthAct == 1)//체력 버튼이 활성화 됬을 때
+        //{
 
-        }
+        //}
     }
 
     public void HealthItemClick()
@@ -201,5 +210,37 @@ public class EventManager : MonoBehaviour
     }
 
     // 능력치 구입 시 OnCounts의 Count들이 활성화 되야 함.
- 
+
+    public void BackButtonClick()
+    {
+        Debug.Log("차 빼 이새끼야!");
+        //if(btn_Back.IsActive())
+        //{
+            
+        //}
+
+        if(Store.activeSelf)
+        {
+            Store.SetActive(false);
+            btn_Start.gameObject.SetActive(true);
+            btn_Store.gameObject.SetActive(true);
+            btn_Collection.gameObject.SetActive(true);
+            btn_Option.gameObject.SetActive(true);
+            Title.SetActive(true);
+        }
+        // 상점창을 활성화 시키고 뒤로가기 버튼을 활성화 시켰을 때 
+        // nullreferenceexception 오류가 발생함.
+        // 인스펙터 창과 함수는 정상적으로 작동 됨
+        // 하지만 상점창 활성화시 뒤로가기 버튼은 나타나긴 하지만 작동은 하지않음
+        // 다시 시작하니 nullreferenceexception오류는 더 이상 발생하지 않음. 하지만 작동되지 않는 것은 여전함.
+        else if(!Store.activeSelf)
+        {
+            //btn_Back.gameObject.SetActive(false);
+        }
+    }
+
+
+
+
+
 }
