@@ -7460,7 +7460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &386903515
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16998,7 +16998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &797763687
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28767,6 +28767,7 @@ MonoBehaviour:
   - {fileID: 3900898077707174920, guid: 3f59ac15a056c2e4da97efb2c0078cf5, type: 3}
   - {fileID: 7275441873409614513, guid: d27ce27315c957e4fba4e88af6fd7150, type: 3}
   - {fileID: 2684061481568384113, guid: 6bdb13dfa12740d4a97812884487c61a, type: 3}
+  - {fileID: 561147244830419209, guid: b1eca80246e8d494083bc9b015b96181, type: 3}
 --- !u!4 &1421713581
 Transform:
   m_ObjectHideFlags: 0
@@ -37019,7 +37020,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1780504011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39195,8 +39196,8 @@ MonoBehaviour:
   level: 0
   kill: 0
   exp: 0
-  nextExp: 03000000050000000a0000006400000096000000d20000001801000068010000c201000058020000
   PlayerGold: 0
+  nextExp: 03000000050000000a0000006400000096000000d20000001801000068010000c201000058020000
   pool: {fileID: 1421713580}
   player: {fileID: 341711927}
   uiLevelUp: {fileID: 892027130}
@@ -40183,7 +40184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2081809761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -40274,7 +40275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2092317075
 RectTransform:
   m_ObjectHideFlags: 0

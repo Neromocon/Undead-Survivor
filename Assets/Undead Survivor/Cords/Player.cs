@@ -145,6 +145,8 @@ public class Player : MonoBehaviour
 
     }
 
+    
+
     void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();

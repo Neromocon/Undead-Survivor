@@ -21,9 +21,10 @@ public class GameManager : MonoBehaviour
     public int level;
     public int kill;
     public int exp;
+    public int PlayerGold;
     public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
     //public int Gold;
-    public int PlayerGold;
+
     [Header("# Game Object")]
     public PoolManager pool;
     // 다양한 곳에서 쉽게 접근할 수 있도록 게임매니저에 풀 매니저 추가
@@ -33,9 +34,11 @@ public class GameManager : MonoBehaviour
     // 기존의 타입을 Result으로 변경
     public Transform uiJoy;
     public GameObject enemyCleaner;
+    //public GameObject Coin;
+    
 
-    
-    
+
+
 
     void Awake()
     {

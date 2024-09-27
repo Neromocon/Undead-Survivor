@@ -14,9 +14,11 @@ public class Enemy : MonoBehaviour
 
     bool isLive;
 
+    public float dropGold = 0.9f; //골드 드랍 확률 10%
+    
+    [SerializeField]    
     public GameObject Gold;
-    [SerializeField]
-    private int gold = 10; // 적 사망시 획득 가능한 골드
+    //private int gold = 10; // 적 사망시 획득 가능한 골드
 
     //리지드바디2D와 스프라이트렌더러를 위한 변수 선언
     Rigidbody2D rigid;
@@ -104,6 +106,8 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        // 랜덤한 값을 생성(0,0 부터 1,0 사이)
+        float randomValue = Random.Range(0f, 1f);
         // OnTriggerEnter2D 매개변수의 태그를 조건으로 활용
         if (!collision.CompareTag("Bullet") || !isLive) 
             //사망 로직이 연달아 실행되는 것을 방지하기 위해 조건 추가
@@ -140,10 +144,16 @@ public class Enemy : MonoBehaviour
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
 
-            GameObject gold = Instantiate(Gold, transform.position, Quaternion.identity);
+            
+            if(randomValue <= dropGold)
+            {
+                // 현재 몬스터의 위치에 골드 오브젝트 생성
+                Instantiate(Gold, transform.position, Quaternion.identity);
+            }
+            //GameObject gold = Instantiate(Gold, transform.position, Quaternion.identity);
             //몬스터가 죽은 위치에 골드 생성
-            GameManager.instance.PlayerGold += 10;
-            // 게임메니저의 PlayerGold에 골드량을 증가시켜줌
+            
+            
 
         }
 
