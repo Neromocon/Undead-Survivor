@@ -6,10 +6,12 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Time, Health }
+    public enum InfoType { Exp, Level, Kill, Time, Health, Gold }
     // 다루게 될 데이터를 미리 열거형 enum으로 선언
     public InfoType type;
     // 선언한 열거형을 타입으로 변수 추가
+
+    //public static HUD instance; //싱글톤 인스턴스 변수
 
     Text myText;
     // UI 컴포넌트를 사용할 때는 UnityEngine.UI 네임스페이스 사용
@@ -17,9 +19,22 @@ public class HUD : MonoBehaviour
 
     void Awake()
     {
+        //if(instance == null)
+        //{
+        //    instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);// 이미 인스턴스가 존재하면 새 오브젝트를 파괴
+        //}
         myText = GetComponent<Text>();
         mySlider = GetComponent<Slider>();
     }
+
+    //public void UpdateGoldUI()
+    //{
+    //    myText.text = string.Format("Gold: {0:F0}", GameManager.instance.PlayerGold);
+    //}
 
     void LateUpdate()
     // LateUpdate에서 switch ~ case 문으로 로직 나누기
@@ -57,9 +72,12 @@ public class HUD : MonoBehaviour
                 float maxHealth = GameManager.instance.maxHealth;
                 mySlider.value = curHealth / maxHealth;
                 break;
-            //default:
+            case InfoType.Gold:
+                myText.text = string.Format("Gold: {0:F0}", GameManager.instance.PlayerGold);
+                break;
+                //default:
 
-            //    break;
+                //    break;
         }
     }
 
